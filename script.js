@@ -1,4 +1,42 @@
-let myLibrary = [];
+
+let library;
+
+// If key not found in local storage, initialize empty array
+if (localStorage.getItem('library') === null) {
+  library = [];
+} else {
+  // if key found in local storage, parse it into an array
+  library = JSON.parse(localStorage.getItem('library'));
+  library.forEach(book => {
+    generateLibrary(book);
+  });
+  updateInfo();
+}
+
+////////// CAROUSEL IMAGE SLIDER FUNCTIONALITY //////////
+const carouselCards = document.querySelector('.carousel-cards');
+const carouselButtons = document.querySelectorAll('.carousel-btn');
+let cardIndex = 1;
+let translateX = 0;
+
+carouselButtons.forEach(button => {
+  button.addEventListener('click', e => {
+    let bookCount = library.length;
+    if (e.target.id === 'previous') {
+      if (cardIndex !== 1) {
+        cardIndex--;
+        translateX += 500;
+      }
+    } else {
+      if (cardIndex !== bookCount) {
+        cardIndex++;
+        translateX -= 500;
+      }
+    }
+    carouselCards.style.transform = `translateX(${translateX}px)`;
+  });
+});
+
 
 // Book Constructor
 function Book(title, author, pages, completed) {
@@ -7,29 +45,24 @@ function Book(title, author, pages, completed) {
   this.pages = pages;
   this.completed = completed;
 }
-// Add new book to myLibrary array
+// Add new book to library array
 function addBookToLibrary(title, author, pages, completed) {
-  myLibrary.push(new Book(title, author, pages, completed))
+  library.push(new Book(title, author, pages, completed))
 }
-Book.prototype.printBook = function() {
-  let str = `${this.title}, ${this.author}, ${this.pages} pages, `;
-  this.completed ? str += `completed` : str += `not completed`
-  return str;
-}
-
-
-
-
 
 // Page Functionality
 document.querySelector('.add-btn').addEventListener('click', () => {
   toggle();
 });
 
+// On submitting form
+// 1) Add book to library array
+// 2) Create a book div
+// 3) toggle blur effect, reset the form, update the library info
 document.querySelector('.submit-btn').addEventListener('click', (e) => {
   e.preventDefault();
-  makeBookDiv();
   addBook();
+  generateLibrary(library[library.length - 1]);
   toggle();
   resetForm();
   updateInfo();
@@ -43,25 +76,6 @@ function toggle() {
   popup.classList.toggle('active');
 }
 
-// Add new book card to carousel
-function makeBookDiv() {
-  let newBook = document.createElement('div');
-  let bookTitle = document.createElement('p');
-  let bookAuthor = document.createElement('p');
-  let pageCount = document.createElement('p');
-  let completed = document.createElement('p')
-  bookTitle.textContent = getTitle();
-  bookAuthor.textContent = getAuthor();
-  pageCount.textContent = getPages();
-  completed.textContent = getCompleted();
-  newBook.appendChild(bookTitle);
-  newBook.appendChild(bookAuthor);
-  newBook.appendChild(pageCount);
-  newBook.appendChild(completed);
-  newBook.classList.add('book-card');
-  document.querySelector('.carousel-cards').appendChild(newBook);
-}
-
 // Add new book object to library array
 function addBook() {
   let title = getTitle();
@@ -69,7 +83,7 @@ function addBook() {
   let pages = getPages();
   let completed = getCompleted();
   addBookToLibrary(title, author, pages, completed);
-  console.log(myLibrary);
+  saveLibrary();
 }
 
 ////////// GET VALUES OF NEW BOOK FORM INPUT FIELDS //////////
@@ -96,10 +110,10 @@ function resetForm() {
 
 // Update running tally of library
 function updateInfo() {
-  let totalBooks = myLibrary.length;
+  let totalBooks = library.length;
   let totalPages = 0;
   let totalCompleted = 0;
-  myLibrary.forEach(book => {
+  library.forEach(book => {
     totalPages += parseInt(book.pages);
     if (book.completed) {
       totalCompleted++;
@@ -110,28 +124,60 @@ function updateInfo() {
   document.querySelector('.completed-count').textContent = `${totalCompleted}`;
 }
 
+// Update library in local storage
+function saveLibrary() {
+  let libraryJSON = JSON.stringify(library);
+  localStorage.setItem('library', libraryJSON);
+}
 
+function generateLibrary(book) {
+  let newBook = document.createElement('div');
+  let bookTitle = document.createElement('p');
+  let bookAuthor = document.createElement('p');
+  let pageCount = document.createElement('p');
+  let read = document.createElement('p');
+  let toggleDiv = document.createElement('div');
+  let toggleText = document.createElement('span');
+  let toggle = document.createElement('input');
+  let deleteBtn = document.createElement('button');
+  deleteBtn.textContent = 'Remove book?';
+  bookTitle.textContent = `Book: ${book.title}`;
+  bookAuthor.textContent = `Author: ${book.author}`;
+  pageCount.textContent = `Number of pages: ${book.pages}`;
+  book.completed ? read.textContent = 'Has been read' : read.textContent = 'Not read yet';
 
-////////// CAROUSEL IMAGE SLIDER FUNCTIONALITY //////////
-const carouselCards = document.querySelector('.carousel-cards');
-const carouselButtons = document.querySelectorAll('.carousel-btn');
-let cardIndex = 1;
-let translateX = 0;
+  toggle.setAttribute('type', 'checkbox');
+  book.completed ? toggle.checked = true : toggle.checked = false;
+  toggleText.textContent = 'Have you read it?';
 
-carouselButtons.forEach(button => {
-  button.addEventListener('click', e => {
-    let bookCount = myLibrary.length;
-    if (e.target.id === 'previous') {
-      if (cardIndex !== 1) {
-        cardIndex--;
-        translateX += 300;
-      }
-    } else {
-      if (cardIndex !== bookCount) {
-        cardIndex++;
-        translateX -= 300;
-      }
-    }
-    carouselCards.style.transform = `translateX(${translateX}px)`;
+  // Add change read status
+  toggle.addEventListener('change', (e) => {
+    let readTag = e.target.parentNode.previousSibling;
+    library[cardIndex - 1].completed = !library[cardIndex - 1].completed;
+    library[cardIndex - 1].completed ? readTag.textContent = 'Has been read' : readTag.textContent = 'Not read yet';
+    saveLibrary();
+    updateInfo();
   });
-});
+
+  deleteBtn.addEventListener('click', (e) => {
+    e.target.parentNode.remove();
+    library.splice(cardIndex - 1, 1);
+    saveLibrary();
+    updateInfo();
+  });
+
+  toggleText.classList.add('checkbox-text');
+  toggle.classList.add('completed');
+  toggleDiv.classList.add('check-completed', 'bookcard-check');
+
+  toggleDiv.appendChild(toggleText);
+  toggleDiv.appendChild(toggle);
+  newBook.appendChild(bookTitle);
+  newBook.appendChild(bookAuthor);
+  newBook.appendChild(pageCount);
+  newBook.appendChild(read);
+  newBook.appendChild(toggleDiv);
+  newBook.appendChild(deleteBtn);
+  newBook.classList.add('book-card');
+  document.querySelector('.carousel-cards').appendChild(newBook);
+}

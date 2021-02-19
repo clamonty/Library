@@ -5,13 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Library Project</title>
   <link rel="stylesheet" href="/style.css">
+  <script src="https://kit.fontawesome.com/eea2cbeea4.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="library-container" id="blur">
     <div class="library-header">
-      <img class="header-img" src="./img/book.png" alt="Three books">
-      <h1 class="header-text">Library</h1>
-      <button class="add-btn">Add New Book</button>
+      <div class="logo">
+        <img class="header-img" src="./img/book.png" alt="Three books">
+        <h1 class="header-text">Library</h1>
+      </div>
+      <div class="nightBtn">
+        <input type="checkbox" name="" id="nightMode" class="nightMode">
+        <label class="label" for="nightMode">
+          <i class="fas fa-moon"></i>
+          <i class="fas fa-sun"></i>
+          <div class="ball"></div>
+        </label>
+      </div>
+
     </div>
     <div class="library-content">
       <div class="carousel">
@@ -23,32 +34,35 @@
       </div>
     </div>
     <div class="library-info">
-      <h2 class="info">Books in library: <span class="book-count"></span></h2>
-      <h2 class="info">Total pages: <span class="page-count"></span></h2>
-      <h2 class="info">Different authors: <span class="author-count"></span></h2>
-      <h2 class="info">Books completed: <span class="completed-count"></span></h2>
+      <h2 class="info">Books in library</h2>
+      <h2 class="book-count">0</h2>
+      <h2 class="info">Total pages</h2>
+      <h2 class="page-count">0</h2>
+      <h2 class="info">Books completed</h2>
+      <h2 class="completed-count">0</h2>
+      <button class="add-btn">Add New Book</button>
     </div>
     <div class="footer">
-      
+      <p>Made for the <img class="logo" src="./img/4441966.png" alt=""> project. Connor Lamont, 2021</p>
     </div>
   </div>
   <div class="popup-form" id="popup">
     <h2>New Book Information</h2>
     <form class="book-form" action="">
       <label for="title">Book Title</label>
-      <input type="text" name="title" id="title">
+      <input type="text" name="title" id="title" required>
       <label for="author">Book Author</label>
-      <input type="text" name="author" id="author">
+      <input type="text" name="author" id="author" required>
       <label for="pages">Page Count</label>
-      <input type="number" min="1" max="9999" name="pages" id="pages">
+      <input type="number" min="1" max="9999" name="pages" id="pages" required>
       <div class="check-completed">
         <span class="checkbox-text">Completed</span>
         <input type="checkbox" name="completed" id="completed">
       </div>
-      <button class="submit-btn">Add Book</button>
+      <button type="submit" class="submit-btn">Add Book</button>
     </form>
   </div>
- 
+  
   <script src="script.js"></script>
 </body>
 </html>

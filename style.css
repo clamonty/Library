@@ -2,8 +2,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
 }
-
+button {
+  font-size: 1em;
+  font-weight: bold;
+}
 .library-container {
   position: relative;
   width: 100%;
@@ -13,10 +17,10 @@
   grid-template-columns: 1fr 6fr 2fr;
   grid-template-areas:
     "header header header"
-    "content content info"
+    "content content content"
     "footer footer footer";
   transition: 0.5s;
-  background: #fff173;
+  background: #ddd;
 }
 .library-container#blur.active {
   filter: blur(20px);
@@ -30,51 +34,12 @@
   left: 1em;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 .logo {
   display: flex;
   align-items: center;
-}
-.nightBtn {
-  height: 50px;
-  width: 100px;
-  margin-right: 2em;
-}
-
-.label {
-  background-color: #111;
-  height: 26px;
-  width: 50px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px;
-  position: relative;
-}
-.fa-moon {
-  color: #f1c40f;
-}
-.fa-sun {
-  color: #f39c12;
-}
-.ball {
-  position: absolute;
-  border-radius: 100%;
-  background-color: #fff;
-  height: 28px;
-  width: 28px;
-  top: -1px;
-  left: -3px;
-  transition: 0.3s;
-}
-.nightMode {
-  opacity: 0;
-}
-.nightMode:checked + .label .ball {
-  transform: translateX(28px);
 }
 .header-img {
   height: 50px;
@@ -84,14 +49,28 @@
   grid-area: content;
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #555;
+  background: #888;
 }
 h2 {
   font-weight: bold;
   text-align: center;
   padding-bottom: 1em;
+}
+.add-btn,
+.submit-btn {
+  padding: .75em 1em;
+  background-color: rgba(182, 255, 145, 0.919);
+  outline: none;
+  border: none;
+  border-radius: .25em;
+}
+.add-btn:hover,
+.submit-btn:hover {
+  background-color:rgba(144, 255, 144, 70%);
+  cursor: pointer;
 }
 
 /* CAROUSEL STYLING */
@@ -111,7 +90,7 @@ h2 {
 }
 
 .carousel-btn {
-  background: #06a4f8;
+  background: #222;
   border: 0;
   border-radius: 100%;
   color: white;
@@ -157,6 +136,17 @@ h2 {
 .check-completed.bookcard-check {
   display: flex;
   justify-content: center;
+}
+.remove-btn {
+  padding: .75em 1em;
+  background-color: rgba(255, 144, 144, 70%);
+  outline: none;
+  border: none;
+  border-radius: .25em;
+}
+.remove-btn:hover {
+  background-color: rgba(255, 144, 144, 90%);
+  cursor: pointer;
 }
 
 
@@ -249,6 +239,26 @@ input:focus {
   width: 30%;
   align-self: center;
 }
+.close-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+  top:0;
+  right:0;
+  margin-right: .5em;
+  margin-top: .5em;
+  padding: .5em .75em;
+  border-radius: 100%;
+  outline: none;
+  border: none;
+  background-color: rgba(255, 144, 144, 70%);
+  cursor: pointer;
+}
+.close-btn:hover {
+  background-color: rgba(255, 144, 144, 90%);
+}
 
 
 /* FOOTER STYLING */
@@ -256,12 +266,22 @@ input:focus {
   grid-area: info;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding-left: 1em;
 }
-.info {
-  font-size: 1.0em;
+.info-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.info,
+.book-count,
+.page-count,
+.completed-count {
+  font-size: 1.2em;
+}
+.info-container:first-of-type {
+  padding-top: 1em;
 }
 .footer {
   grid-area: footer;
@@ -281,4 +301,59 @@ input:focus {
   border-radius: 100%;
   margin-left: .5em;
   margin-right: .5em;
+}
+
+
+
+/* RESPONSIVE DESIGN ELEMENT */
+
+@media screen and (max-width: 692px) {
+  .library-header {
+    flex-direction: column;
+  }
+  .logo {
+    margin-top: .5em;
+  }
+  .library-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .footer {
+    height: 0px;
+    display: none;
+  }
+  .library-content {
+    height: 100vh;
+  }
+  .library-info {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .info-container {
+    padding-top: 1em;
+  }
+  .info {
+    padding-left: 1em;
+  }
+  .add-btn {
+    margin-bottom: 1em;
+  }
+}
+
+@media screen and (max-width: 563px) { 
+  .page-count,
+  .completed-count,
+  .book-count {
+    padding-left: 0em;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .library-info {
+    flex-direction: column;
+  }
+  .info-container {
+    padding: 0;
+  }
 }

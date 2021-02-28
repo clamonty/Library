@@ -54,12 +54,29 @@ function addBookToLibrary(title, author, pages, completed) {
 document.querySelector('.add-btn').addEventListener('click', () => {
   toggle();
 });
+document.querySelector('.close-btn').addEventListener('click', () => {
+  toggle();
+});
 
 // On submitting form
 // 1) Add book to library array
 // 2) Create a book div
 // 3) toggle blur effect, reset the form, update the library info
 document.querySelector('.submit-btn').addEventListener('click', (e) => {
+  // Make sure required inputs are filled before submitting form
+  if (document.querySelector('#title').value == "") {
+    document.querySelector('#title').focus();
+    return false;
+  }
+  if (document.querySelector('#author').value == "") {
+    document.querySelector('#author').focus();
+    return false;
+  }
+  if (document.querySelector('#pages').value <= 0 || document.querySelector('#pages').value >= 9999) {
+    document.querySelector('#pages').focus();
+    return false;
+  }
+  
   e.preventDefault();
   addBook();
   generateLibrary(library[library.length - 1]);
@@ -141,6 +158,7 @@ function generateLibrary(book) {
   let toggle = document.createElement('input');
   let deleteBtn = document.createElement('button');
   deleteBtn.textContent = 'Remove book?';
+  deleteBtn.classList.add('remove-btn');
   bookTitle.textContent = `Book: ${book.title}`;
   bookAuthor.textContent = `Author: ${book.author}`;
   pageCount.textContent = `Number of pages: ${book.pages}`;

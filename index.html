@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Library Project</title>
   <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/eea2cbeea4.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -14,15 +16,22 @@
         <img class="header-img" src="./img/book.png" alt="Three books">
         <h1 class="header-text">Library</h1>
       </div>
-      <div class="nightBtn">
-        <input type="checkbox" name="" id="nightMode" class="nightMode">
-        <label class="label" for="nightMode">
-          <i class="fas fa-moon"></i>
-          <i class="fas fa-sun"></i>
-          <div class="ball"></div>
-        </label>
+      
+      <div class="library-info">
+        <div class="info-container">
+          <h2 class="info">Books in library:&nbsp;</h2>
+          <h2 class="book-count">0</h2>
+        </div>
+        <div class="info-container">
+          <h2 class="info">Total pages:&nbsp;</h2>
+          <h2 class="page-count">0</h2>
+        </div>
+        <div class="info-container">
+        <h2 class="info">Books completed:&nbsp;</h2>
+        <h2 class="completed-count">0</h2>
+        </div> 
       </div>
-
+      <button class="add-btn">Add New Book</button>
     </div>
     <div class="library-content">
       <div class="carousel">
@@ -32,22 +41,16 @@
         </div>
         <button class="carousel-btn next" id="next">></button>
       </div>
+
     </div>
-    <div class="library-info">
-      <h2 class="info">Books in library</h2>
-      <h2 class="book-count">0</h2>
-      <h2 class="info">Total pages</h2>
-      <h2 class="page-count">0</h2>
-      <h2 class="info">Books completed</h2>
-      <h2 class="completed-count">0</h2>
-      <button class="add-btn">Add New Book</button>
-    </div>
+    
     <div class="footer">
       <p>Made for the <img class="logo" src="./img/4441966.png" alt=""> project. Connor Lamont, 2021</p>
     </div>
   </div>
   <div class="popup-form" id="popup">
     <h2>New Book Information</h2>
+    <button class="close-btn">X</button>
     <form class="book-form" action="">
       <label for="title">Book Title</label>
       <input type="text" name="title" id="title" required>
